@@ -3,6 +3,7 @@ using System.Linq;
 using Bookchin.Library.API.Data.Models;
 using Bookchin.Library.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Bookchin.Library.API.Data.Contexts
@@ -14,8 +15,13 @@ namespace Bookchin.Library.API.Data.Contexts
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<User> Users { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options) { }
+        private IConfiguration _configuration;
+
+        public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration)
+            : base(options)
+        {
+            _configuration = configuration;
+        }
 
         private static ILoggerFactory ContextLoggerFactory
             => LoggerFactory.Create(b => b.AddConsole().AddFilter("", LogLevel.Information));
@@ -24,7 +30,7 @@ namespace Bookchin.Library.API.Data.Contexts
         {
             optionsBuilder
                 .UseLazyLoadingProxies()
-                .UseSqlite("Data Source=./Data/BookchinLibrary.db")
+                .UseSqlite(_configuration["DefaultConnection"])
                 .UseLoggerFactory(ContextLoggerFactory);
         }
 
