@@ -6,7 +6,7 @@ using Bookchin.Library.API.Interfaces;
 
 namespace Bookchin.Library.API.Data.Models
 {
-    public class Organization : User, IUpdateable<Organization, OrganizationViewModel>
+    public class Organization : UserAccount, IUpdateable<Organization, OrganizationViewModel>
     {
         // Model Properties
         [Required]

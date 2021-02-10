@@ -1,8 +1,6 @@
-using System;
-
 namespace Bookchin.Library.API.Interfaces
 {
-    public interface IUser : IDbModel, IJsonable
+    public interface IUserAccount : IDbModel, IJsonable
     {
         string DisplayName { get; }
         string ShortName { get; }

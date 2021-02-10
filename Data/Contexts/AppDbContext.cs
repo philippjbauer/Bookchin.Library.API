@@ -2,18 +2,20 @@ using System;
 using System.Linq;
 using Bookchin.Library.API.Data.Models;
 using Bookchin.Library.API.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Bookchin.Library.API.Data.Contexts
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Individual> Individuals { get; set; }
         public DbSet<Organization> Organizations { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserAccount> UserAccounts { get; set; }
 
         private IConfiguration _configuration;
 
@@ -30,7 +32,7 @@ namespace Bookchin.Library.API.Data.Contexts
         {
             optionsBuilder
                 .UseLazyLoadingProxies()
-                .UseSqlite(_configuration["DefaultConnection"])
+                .UseSqlite(_configuration.GetConnectionString("DefaultConnection"))
                 .UseLoggerFactory(ContextLoggerFactory);
         }
 

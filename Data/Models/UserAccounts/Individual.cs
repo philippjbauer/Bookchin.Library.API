@@ -6,7 +6,7 @@ using Bookchin.Library.API.Interfaces;
 
 namespace Bookchin.Library.API.Data.Models
 {
-    public class Individual : User, IUpdateable<Individual, IndividualViewModel>
+    public class Individual : UserAccount, IUpdateable<Individual, IndividualViewModel>
     {
         // Model Properties
         public string Title { get; set; }

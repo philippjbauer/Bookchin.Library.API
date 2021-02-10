@@ -5,11 +5,13 @@ using Microsoft.Extensions.Logging;
 using Bookchin.Library.API.Data.Models;
 using Bookchin.Library.API.Repositories;
 using Bookchin.Library.API.Controllers.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bookchin.Library.API.Controllers
 {
     [ApiController]
-    [Route("Users/[controller]")]
+    [Authorize]
+    [Route("UserAccounts/[controller]")]
     public class IndividualsController : ControllerBase
     {
         private readonly ILogger<IndividualsController> _logger;
@@ -36,7 +38,7 @@ namespace Bookchin.Library.API.Controllers
         public ActionResult<List<Individual>> ListIndividuals()
         {
             List<Individual> individuals = _repository
-                .List(individual => individual.IsActive == true || individual.IsActive == false);
+                .List(individual => true);
             
             return Ok(individuals);
         }

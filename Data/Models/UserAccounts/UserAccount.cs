@@ -7,7 +7,7 @@ using Bookchin.Library.API.Interfaces;
 
 namespace Bookchin.Library.API.Data.Models
 {
-    public abstract class User : DbModelBase, IUser
+    public abstract class UserAccount : DbModelBase, IUserAccount
     {
         // Identifier Properties
         [JsonIgnore]
@@ -15,15 +15,15 @@ namespace Bookchin.Library.API.Data.Models
 
         // Model Properties
         [Required]
-        public bool IsActive { get; set; } = false;
-
-        [Required]
         public virtual Address Address { get; set; }
+        [JsonIgnore]
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
         // Dynamic Properties
         public abstract string DisplayName { get; }
         public abstract string ShortName { get; }
         public string UserType => this.Discriminator;
+        public bool IsActive => this.ApplicationUser.IsActive;
 
         public override bool IsValid
         {
@@ -40,9 +40,9 @@ namespace Bookchin.Library.API.Data.Models
             }
         }
 
-        public User() : base() { }
+        public UserAccount() : base() { }
 
-        public User(AddressViewModel vm)
+        public UserAccount(AddressViewModel vm)
         {
             this.Address = new Address(vm);
         }
