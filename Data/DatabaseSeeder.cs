@@ -107,16 +107,19 @@ namespace Bookchin.Library.API.Data
                 }
             }
 
-            if (File.Exists("./users.txt"))
+            if (this.Credentials.Count > 0)
             {
-                File.Delete("./users.txt");
-            }
-
-            using (StreamWriter file = new StreamWriter("./users.txt"))
-            {
-                foreach ((string username, string password) in this.Credentials)
+                if (File.Exists("./users.txt"))
                 {
-                    file.WriteLine($"{username}:{password}");
+                    File.Delete("./users.txt");
+                }
+
+                using (StreamWriter file = new StreamWriter("./users.txt"))
+                {
+                    foreach ((string username, string password) in this.Credentials)
+                    {
+                        file.WriteLine($"{username}:{password}");
+                    }
                 }
             }
         }
