@@ -10,6 +10,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Bookchin.Library.API.Repositories
 {
+    // Todo:
+    // [✓] Implement sync interface
+    // [ ] Implement async interface
+    
+    /// <summary>
+    /// Base for simple CRUD functionality on the database.
+    /// </summary>
+    /// <typeparam name="TEntity">Bookchin.Library.API.Data.Models Type</typeparam>
     public abstract class CrudRepositoryBase<TEntity> : IModelRepository<TEntity>
         where TEntity : class, IDbModel
     {
