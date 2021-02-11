@@ -42,10 +42,10 @@ namespace Bookchin.Library.API.Controllers
 
             JwtSecurityToken token = this.CreateJwtToken(user, jwtIssuer, jwtSecret);
 
-            return Ok(new
+            return Ok(new JwtTokenViewModel
             {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                expiration = token.ValidTo
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Expiration = token.ValidTo
             });
         }
 
