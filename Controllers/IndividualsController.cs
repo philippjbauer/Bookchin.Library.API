@@ -6,12 +6,16 @@ using Bookchin.Library.API.Data.Models;
 using Bookchin.Library.API.Repositories;
 using Bookchin.Library.API.Controllers.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Mime;
+using Microsoft.AspNetCore.Http;
 
 namespace Bookchin.Library.API.Controllers
 {
     [ApiController]
     [Authorize]
     [Route("UserAccounts/[controller]")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     public class IndividualsController : ControllerBase
     {
         private readonly ILogger<IndividualsController> _logger;
@@ -26,15 +30,17 @@ namespace Bookchin.Library.API.Controllers
             _repository = individualsRepository;
         }
 
-        [HttpPost]
+        [HttpPost(Name = nameof(CreateIndividual))]
+        [ProducesResponseType(typeof(Individual), StatusCodes.Status201Created)]
         public ActionResult<Individual> CreateIndividual([FromBody] IndividualViewModel data)
         {
             Individual individual = _repository.Create(data);
 
-            return Ok(individual);
+            return CreatedAtAction(nameof(Individual), new { Id = individual.Id }, individual);
         }
-        
-        [HttpGet]
+
+        [HttpGet(Name = nameof(ListIndividuals))]
+        [ProducesResponseType(typeof(List<Individual>), StatusCodes.Status200OK)]
         public ActionResult<List<Individual>> ListIndividuals()
         {
             List<Individual> individuals = _repository
@@ -43,8 +49,8 @@ namespace Bookchin.Library.API.Controllers
             return Ok(individuals);
         }
         
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}", Name = nameof(ReadIndividual))]
+        [ProducesResponseType(typeof(Individual), StatusCodes.Status200OK)]
         public ActionResult<Individual> ReadIndividual(Guid id)
         {
             Individual individual = _repository.Read(id);
@@ -52,8 +58,8 @@ namespace Bookchin.Library.API.Controllers
             return Ok(individual);
         }
 
-        [HttpPut]
-        [Route("{id}")]
+        [HttpPut("{id}", Name = nameof(UpdateIndividual))]
+        [ProducesResponseType(typeof(Individual), StatusCodes.Status200OK)]
         public ActionResult<Individual> UpdateIndividual(Guid id, [FromBody] IndividualViewModel vm)
         {
             Individual individual = _repository.Update(id, vm);
@@ -61,13 +67,13 @@ namespace Bookchin.Library.API.Controllers
             return Ok(individual);
         }
 
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpDelete("{id}", Name = nameof(DeleteIndividual))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public ActionResult DeleteIndividual(Guid id)
         {
             _repository.Delete(id);
 
-            return Ok();
+            return NoContent();
         }
     }
 }

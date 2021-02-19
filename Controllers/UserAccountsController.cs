@@ -5,12 +5,16 @@ using Microsoft.Extensions.Logging;
 using Bookchin.Library.API.Data.Models;
 using Bookchin.Library.API.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Mime;
+using Microsoft.AspNetCore.Http;
 
 namespace Bookchin.Library.API.Controllers
 {
     [ApiController]
     [Authorize]
     [Route("[controller]")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     public class UserAccountsController : ControllerBase
     {
         private readonly ILogger<UserAccountsController> _logger;
@@ -25,7 +29,8 @@ namespace Bookchin.Library.API.Controllers
             _repository = userAccountsRepository;
         }
 
-        [HttpGet]
+        [HttpGet(Name = nameof(GetUsers))]
+        [ProducesResponseType(typeof(UserAccount), StatusCodes.Status200OK)]
         public ActionResult<List<UserAccount>> GetUsers()
         {
             List<UserAccount> userAccounts = _repository.List();
@@ -33,8 +38,8 @@ namespace Bookchin.Library.API.Controllers
             return Ok(userAccounts);
         }
 
-        [HttpGet]
-        [Route("All")]
+        [HttpGet("All", Name = nameof(GetAllUsers))]
+        [ProducesResponseType(typeof(UserAccount), StatusCodes.Status200OK)]
         public ActionResult<List<UserAccount>> GetAllUsers()
         {
             List<UserAccount> userAccounts = _repository

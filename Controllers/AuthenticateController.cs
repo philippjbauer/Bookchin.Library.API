@@ -1,11 +1,13 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Bookchin.Library.API.Controllers.ViewModels;
 using Bookchin.Library.API.Data.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +17,8 @@ namespace Bookchin.Library.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     public class AuthenticateController : ControllerBase
     {
         private UserManager<ApplicationUser> _userManager;
@@ -26,7 +30,8 @@ namespace Bookchin.Library.API.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost]
+        [HttpPost(Name = nameof(Login))]
+        [ProducesResponseType(typeof(JwtTokenViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Login([FromBody] LoginViewModel data)
         {
             ApplicationUser user = _userManager.Users
