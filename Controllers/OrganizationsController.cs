@@ -16,6 +16,8 @@ namespace Bookchin.Library.API.Controllers
     [Route("UserAccounts/[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public class OrganizationsController : ControllerBase
     {
         private readonly ILogger<OrganizationsController> _logger;
@@ -51,6 +53,7 @@ namespace Bookchin.Library.API.Controllers
         
         [HttpGet("{id}", Name = nameof(ReadOrganization))]
         [ProducesResponseType(typeof(Organization), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Organization> ReadOrganization(Guid id)
         {
             Organization organization = _repository.Read(id);
@@ -60,6 +63,7 @@ namespace Bookchin.Library.API.Controllers
 
         [HttpPut("{id}", Name = nameof(UpdateOrganization))]
         [ProducesResponseType(typeof(Organization), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Organization> UpdateOrganization(Guid id, [FromBody] OrganizationViewModel vm)
         {
             Organization organization = _repository.Update(id, vm);
@@ -69,6 +73,7 @@ namespace Bookchin.Library.API.Controllers
 
         [HttpDelete("{id}", Name = nameof(DeleteOrganization))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteOrganization(Guid id)
         {
             _repository.Delete(id);

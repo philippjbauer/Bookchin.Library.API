@@ -15,6 +15,8 @@ namespace Bookchin.Library.API.Controllers
     [Route("[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public class UserAccountsController : ControllerBase
     {
         private readonly ILogger<UserAccountsController> _logger;

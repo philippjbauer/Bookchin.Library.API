@@ -16,6 +16,8 @@ namespace Bookchin.Library.API.Controllers
     [Route("UserAccounts/[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public class IndividualsController : ControllerBase
     {
         private readonly ILogger<IndividualsController> _logger;
@@ -51,6 +53,7 @@ namespace Bookchin.Library.API.Controllers
         
         [HttpGet("{id}", Name = nameof(ReadIndividual))]
         [ProducesResponseType(typeof(Individual), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Individual> ReadIndividual(Guid id)
         {
             Individual individual = _repository.Read(id);
@@ -60,6 +63,7 @@ namespace Bookchin.Library.API.Controllers
 
         [HttpPut("{id}", Name = nameof(UpdateIndividual))]
         [ProducesResponseType(typeof(Individual), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Individual> UpdateIndividual(Guid id, [FromBody] IndividualViewModel vm)
         {
             Individual individual = _repository.Update(id, vm);
@@ -69,6 +73,7 @@ namespace Bookchin.Library.API.Controllers
 
         [HttpDelete("{id}", Name = nameof(DeleteIndividual))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteIndividual(Guid id)
         {
             _repository.Delete(id);

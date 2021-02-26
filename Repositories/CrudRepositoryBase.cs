@@ -47,7 +47,7 @@ namespace Bookchin.Library.API.Repositories
                 .TagWith<TEntity>($"Get list of records of type {_recordType.Name}.")
                 .Where(predicate)
                 .ToList();
-
+            
             return records;
         }
 
